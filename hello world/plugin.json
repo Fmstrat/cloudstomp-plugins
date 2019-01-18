@@ -1,0 +1,83 @@
+{
+	"name": "hello world",
+	"instances": [
+		{ "instance": "t2.nano", "description": "1 vCPU, 0.5GB RAM", "spot": false },
+		{ "instance": "t2.micro", "description": "1 vCPU, 1GB RAM", "spot": true },
+		{ "instance": "t2.small", "description": "1 vCPU, 2GB RAM", "spot": true }
+	],
+	"build": {
+		"version": 1,
+		"instance": "t2.nano",
+		"ami": "ami-0ac019f4fcb7cb7e6",
+		"user": "ubuntu",
+		"diskgb": "8",
+		"scripts": [
+			"build.sh"
+		]
+	},
+	"firewall": {
+		"securitygroup": "hello world",
+		"ports": [
+			{
+				"protocol": "tcp",
+				"port": 22
+			}
+		]
+	},
+	"inputs": [
+		{
+			"variable": "waittime",
+			"questiontype": "int",
+			"depends": null,
+			"question": "How many seconds would you like to wait between printing 'hello world'?",
+			"responses": null,
+			"default": 10,
+			"showresponses": true,
+			"helpfile": null
+		},
+		{
+			"variable": "password",
+			"questiontype": "password",
+			"depends": null,
+			"question": "Enter a password for gocryptfs encrypted output (leave blank for no encryption):",
+			"responses": null,
+			"default": "",
+			"showresponses": false,
+			"helpfile": null
+		}
+	],
+	"remote": {
+		"script": "remote.sh",
+		"commands": [
+			{
+				"command": "start",
+				"terminal": false,
+				"display": "inactive"
+			},
+			{
+				"command": "status",
+				"terminal": false,
+				"display": "running"
+			},
+			{
+				"command": "connect",
+				"terminal": true,
+				"display": "running"
+			},
+			{
+				"command": "stop",
+				"terminal": true,
+				"display": "running"
+			}
+		]
+	},
+	"local": {
+		"script": "local.sh",
+		"commands": [
+			{
+				"command": "output",
+				"display": "always"
+			}
+		]
+	}
+}
